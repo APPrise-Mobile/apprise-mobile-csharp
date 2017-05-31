@@ -431,3 +431,5 @@ __pycache__/
 # BizTalk build output
 
 # End of https://www.gitignore.io/api/csharp,visualstudio,visualstudiocode
+
+.DS_Store
