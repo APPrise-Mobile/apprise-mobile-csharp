@@ -75,30 +75,43 @@ namespace AppriseMobile
             return JsonConvert.DeserializeObject<T>(content);
 		}
 
-		private void UploadFile(string apiPath, string filePath)
+        private void UploadFile(string apiPath, string filePath, Dictionary<string,string> otherParams = null)
 		{
 			var content = new MultipartFormDataContent();
 
 			using (var streamContent = new StreamContent(File.OpenRead(filePath)))
 			{
 				content.Add(streamContent, "file", Path.GetFileName(filePath));
+
+                if (otherParams != null)
+                {
+                    foreach(var pair in otherParams)
+                    {
+                        content.Add(new StringContent(pair.Value), pair.Key);
+                    }
+                }
+
 				var response = httpClient.PostAsync(BuildApiUrl(apiPath), content).Result;
 				response.EnsureSuccessStatusCode();
 			}
 		}
 
-		/// <summary>
-		/// Upload a csv to add directories and directory entries to the platform
-		/// </summary>
-		/// <param name="filePath">Csv of entries to upload</param>
-		/// <param name="directoryName">(Optional) Name of the directory to upload to</param>
-		public void UploadDirectoryCsv(string filePath, string directoryName = "")
-		{
-			string apiPath;
-			if (directoryName == null || directoryName == string.Empty) apiPath = "/directory/account-csv";
-			else apiPath = "/directory/single-csv";
-
-			UploadFile(apiPath, filePath);
+        /// <summary>
+        /// Upload a csv to add directories and directory entries to the platform
+        /// </summary>
+        /// <param name="filePath">Csv of entries to upload</param>
+        /// <param name="directoryName">(Optional) Name of the directory to upload to</param>
+        public void UploadDirectoryCsv(string filePath, string directoryName = "")
+        {
+            if (directoryName == null || directoryName == string.Empty) UploadFile("/directory/account-csv", filePath);
+            else
+            {
+                var otherParams = new Dictionary<string, string>
+                {
+                    ["directoryName"] = directoryName
+                };
+                UploadFile("/directory/single-csv", filePath, otherParams);
+            }
 		}
 
 		/// <summary>
