@@ -178,6 +178,9 @@ namespace AppriseMobile
 		[JsonProperty("thumbnailJobStatus")]
 		public JobStatus ThumbnailJobStatus { get; private set; }
 
+        [JsonProperty("caption")]
+        public string Caption { get; set; }
+
 		private Content()
 		{
 			AccessGroups = new List<ObjectId?>();

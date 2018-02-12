@@ -250,7 +250,7 @@ namespace AppriseMobile
                     break;
 
                 case "upload":
-                    Console.WriteLine("Usage: AppriseMobile.exe <environment> <grant code> contents upload <title> <file> <folder id>");
+                    Console.WriteLine("Usage: AppriseMobile.exe <environment> <grant code> contents upload <title> <file> <folder id> [caption]");
                     break;
 
                 default:
@@ -291,6 +291,10 @@ namespace AppriseMobile
                     if (title != null && file != null && contentFolder != null)
                     {
                         var content = Content.FromFile(title, file, new ObjectId(contentFolder));
+
+                        var caption = options?.GetValueOrDefault(3);
+                        if (caption != null) content.Caption = caption;
+
                         client.UploadContent(content);
                         Console.WriteLine("Content Uploaded");
                     }

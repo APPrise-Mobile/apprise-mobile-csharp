@@ -141,6 +141,7 @@ namespace AppriseMobile
 				httpContent.AddString(content.Title, "title");
 				httpContent.AddString(content.ContentFolder.ToString(), "contentFolder");
 				httpContent.AddString(content.Share.ToEnumString(), "share");
+                httpContent.AddString(content.Caption, "caption");
 
 				httpContent.AddBool(content.NotesEnabled, "notesEnabled");
 				httpContent.AddBool(content.Notify, "notify");
