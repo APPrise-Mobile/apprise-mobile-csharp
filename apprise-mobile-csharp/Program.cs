@@ -149,6 +149,10 @@ namespace AppriseMobile
                     Console.WriteLine("Usage: AppriseMobile.exe <environment> <grant code> groups list");
                     break;
 
+                case "upload":
+                    Console.WriteLine("Usage: AppriseMobile.exe <environment> <grant code> groups upload <group name> <csv file>");
+                    break;
+
                 default:
                     Console.WriteLine("Usage: AppriseMobile.exe <environment> <grant code> groups <action> [options]");
                     Console.WriteLine("Actions: list (show all groups)");
@@ -172,10 +176,22 @@ namespace AppriseMobile
                     break;
 
                 case "list":
-                    Console.WriteLine("Getting All Groups...");
-                    var groups = client.GetGroups();
-                    Console.WriteLine("id : name");
-                    foreach (var group in groups) Console.WriteLine(group.Id + " : " + group.Name);
+                    {
+                        Console.WriteLine("Getting All Groups...");
+                        var groups = client.GetGroups();
+                        Console.WriteLine("id : name");
+                        foreach (var group in groups) Console.WriteLine(group.Id + " : " + group.Name);
+                    }
+                    break;
+
+                case "upload":
+                    {
+                        Console.WriteLine("Starting Single Group CSV Upload...");
+                        var group = options?.GetValueOrDefault(0);
+                        var csv = options?.GetValueOrDefault(1);
+                        if (!File.Exists(csv)) Console.WriteLine("Error: csv file not found");
+                        else client.UploadSingleGroupCsv(csv, group);
+                    }
                     break;
 
                 default:
