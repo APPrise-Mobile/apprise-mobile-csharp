@@ -17,6 +17,6 @@ For example,
 
 To upload a CSV of your user base: `AppriseMobile.exe prod xyzgrantcodeherexyz users upload ./user-list.csv`
 
-To upload a CSV of your directory: `AppriseMobile.exe prod xyzgrantcodeherexyz directory upload ./directory-list.csv'
+To upload a CSV of your directory: `AppriseMobile.exe prod xyzgrantcodeherexyz directory upload ./directory-list.csv`
 
 For more info: `AppriseMobile.exe help <command> <action> ` (ex: help users, help users upload)
