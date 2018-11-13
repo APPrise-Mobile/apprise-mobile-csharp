@@ -87,8 +87,9 @@ namespace AppriseMobile
                 case "upload":
                     Console.WriteLine("Starting User CSV Upload...");
                     var csv = options?.GetValueOrDefault(0);
+                    var dontRemoveMembers = options?.GetValueOrDefault(1);
                     if (!File.Exists(csv)) Console.WriteLine("Error: csv file not found");
-                    else client.UploadUserCsv(csv);
+                    else client.UploadUserCsv(csv, dontRemoveMembers);
                     break;
 
                 default:
