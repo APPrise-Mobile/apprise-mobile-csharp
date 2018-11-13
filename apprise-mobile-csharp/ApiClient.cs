@@ -132,13 +132,26 @@ namespace AppriseMobile
         /// Upload a csv to add users to the platform
         /// </summary>
         /// <param name="filePath">Csv file of users to upload</param>
+        /// <param name="dontRemoveMembers">(Optional) boolean to control dontRemoveMembers not in the csv featue</param>
         /// <remarks>
         /// The file needs to contain two columns.
         /// The first column will be your users' unique identifiers.
         /// The second column will be the name of the group the user is in.
         /// If the user is in multiple groups they can b in multiple rows in the csv
         /// </remarks>
-        public void UploadUserCsv(string filePath) => UploadFile("/users/bulk-csv", filePath);
+        public void UploadUserCsv(string filePath, string dontRemoveMembers = "")
+        {
+            if (dontRemoveMembers == null || dontRemoveMembers == string.Empty)  UploadFile("/users/bulk-csv", filePath);
+            else
+            {
+                var otherParams = new Dictionary<string, string>
+                {
+                    ["dontRemoveMembers"] = dontRemoveMembers
+                };
+                UploadFile("/users/bulk-csv", filePath, otherParams);
+            }
+
+        }
 
         /// <summary>
         /// Add a new content to the account
