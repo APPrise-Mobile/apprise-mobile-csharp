@@ -29,7 +29,7 @@ namespace AppriseMobile
             switch (environment)
             {
                 case ApiEnvironment.Beta:
-                    baseUrl = "https://beta-api.indiciummobile.com/v2";
+                    baseUrl = "https://api.beta.theemployeeapp.com/v2";
                     break;
 
                 default:
