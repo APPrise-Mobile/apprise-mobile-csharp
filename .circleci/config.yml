@@ -1,0 +1,42 @@
+defaults: &defaults
+ working_directory: /build
+ docker:
+  - image: ubuntu:18.04
+
+version: 2
+jobs:
+ build:
+  <<: *defaults
+  steps:
+   - checkout
+   - run:
+      name: Install Pre-requisties
+      command: |
+       export DEBIAN_FRONTEND=noninteractive
+       apt-get update
+       apt-get -y install gnupg wget tzdata
+       apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+       echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list
+       ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+       dpkg-reconfigure --frontend noninteractive tzdata
+       apt-get update
+       apt-get -y install mono-complete
+       wget https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+       mono nuget.exe restore apprise-mobile-csharp.sln
+   - run:
+      name: Build Application
+      command: |
+       xbuild /p:Configuration=Release apprise-mobile-csharp.sln
+   - run:
+      name: Test Running Application
+      command: |
+       cd /build/apprise-mobile-csharp/bin/Release
+       mono AppriseMobile.exe
+   - store_artifacts:
+      path: apprise-mobile-csharp
+
+workflows:
+ version: 2
+ commit:
+  jobs:
+   - build
